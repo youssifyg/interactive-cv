@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive CV - Youssef Yaqob</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Fintech Professional (Warm Neutrals: bg-gray-50/bg-white, Text: text-gray-800, Accent: text-blue-600/bg-blue-600) -->
+    <!-- Application Structure Plan: A single-page, vertical narrative SPA with a sticky top navigation (Home, Experience, Skills, Education). This structure was chosen to guide a recruiter through a clear story: 1. Land on "Home" to read the "hybrid" professional summary. 2. Scroll to "Experience" to see the deep banking domain knowledge, with JS-powered tabs to explore different roles and a Chart.js visual of time spent. 3. Move to "Skills" to see the dual "Technical" vs. "Professional" skillsets, also using JS-tabs. 4. Conclude at "Education" which highlights the "Udacity" cert as proof of the tech transition. This narrative flow is more persuasive than a static document for a career-changer. -->
+    <!-- Visualization & Content Choices: 
+        1. Report Info: Roles at Banque Misr (Teller, CS, Credit, ATM Supervisor) and durations. Goal: Inform/Organize. Viz: Chart.js Donut Chart. Interaction: Hover tooltip. Justification: Visually summarizes the breadth of his 12+ years of banking experience in one graphic, reinforcing the "holistic view" claim. Library: Chart.js (Canvas).
+        2. Report Info: Technical & Professional Skills lists. Goal: Organize/Inform. Viz: Interactive HTML/CSS lists. Interaction: JS-powered buttons toggle visibility between the two skill categories. Justification: Cleaner and more informative than a chart, as it allows for descriptive sub-text (e.g., "VBA (Excel Automation)"). Library: Vanilla JS.
+        3. Report Info: Certifications. Goal: Emphasize. Viz: HTML/CSS Card. Interaction: The "Udacity" list item has a visual accent (border). Justification: Draws the recruiter's eye directly to the most relevant proof of his tech transition. Library: Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 450px;
+            }
+        }
+        .nav-link.active {
+            color: #2563EB; /* text-blue-600 */
+            font-weight: 500;
+        }
+        .tab-button.active {
+            background-color: #2563EB; /* bg-blue-600 */
+            color: #FFFFFF; /* text-white */
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="font-bold text-xl text-blue-600">Youssef Yaqob</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">Home</a>
+                        <a href="#experience" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">Experience</a>
+                        <a href="#skills" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">Skills</a>
+                        <a href="#education" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">Education</a>
+                        <a href="#contact" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <!-- Mobile menu button can be added here if needed -->
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section (Hero) -->
+        <section id="home" class="h-screen min-h-[500px] flex items-center justify-center bg-white">
+            <div class="text-center max-w-3xl mx-auto px-4">
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">
+                    Youssef Yaqob Beshir
+                </h1>
+                <p class="mt-6 text-lg md:text-xl leading-8 text-gray-600">
+                    Detail-oriented banking professional with over 10 years of experience, now transitioning into technology. I combine deep banking domain expertise with foundational programming and analytical skills, seeking to build and optimize financial applications.
+                </p>
+                <div class="mt-10">
+                    <a href="#experience" class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                        Explore My Experience
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Professional Experience</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        My 12+ years in banking provided a holistic view of financial operations, from customer-facing roles to credit analysis and technical supervision. This domain expertise is the foundation of my technical ambitions.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Chart Visual -->
+                    <div class="chart-container">
+                        <canvas id="rolesChart"></canvas>
+                    </div>
+
+                    <!-- Interactive Roles -->
+                    <div class="flex flex-col">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2">Holistic Role at Banque Misr</h3>
+                        <p class="text-gray-600 mb-6">
+                            I've held multiple roles, giving me a complete understanding of the bank's operational flow. Select a role below to see the details.
+                        </p>
+                        
+                        <!-- Tab Buttons -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button class="tab-button exp-tab-button active" data-tab="atm">ATM Supervisor</button>
+                            <button class="tab-button exp-tab-button" data-tab="credit">Credit Officer</button>
+                            <button class="tab-button exp-tab-button" data-tab="teller">Bank Teller</button>
+                            <button class="tab-button exp-tab-button" data-tab="cs">Customer Service</button>
+                        </div>
+                        
+                        <!-- Tab Content -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg min-h-[250px]">
+                            <div id="atm" class="tab-content exp-tab-content active">
+                                <h4 class="text-xl font-bold text-blue-600 mb-2">ATM Supervisor (7.5+ Years)</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                    <li>Supervise and manage all aspects of ATM operations, maintenance, and cash replenishment.</li>
+                                    <li class="font-semibold text-gray-800">Proactively developed internal tools using VBA and advanced Excel functions to automate reporting and data validation tasks, improving team efficiency and reducing manual errors.</li>
+                                </ul>
+                            </div>
+                            <div id="credit" class="tab-content exp-tab-content">
+                                <h4 class="text-xl font-bold text-blue-600 mb-2">Credit Officer (2 Years)</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                    <li>Analyzed financial statements and assessed credit risk for personal and small business loans.</li>
+                                    <li>Prepared credit proposals and ensured compliance with bank policies.</li>
+                                </ul>
+                            </div>
+                            <div id="teller" class="tab-content exp-tab-content">
+                                <h4 class="text-xl font-bold text-blue-600 mb-2">Bank Teller (2 Years)</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                    <li>Processed high-volume customer transactions with 100% accuracy.</li>
+                                    <li>Managed cash drawer and performed daily reconciliation.</li>
+                                </ul>
+                            </div>
+                            <div id="cs" class="tab-content exp-tab-content">
+                                <h4 class="text-xl font-bold text-blue-600 mb-2">Customer Service Officer (1 Year)</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                    <li>Resolved complex client inquiries regarding accounts, loans, and services.</li>
+                                    <li>Managed account opening and maintenance processes.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">My Hybrid Skillset</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        I bridge the gap between business and technology. My skills are split between the technical and analytical tools I use, and the professional competencies I've built over a decade.
+                    </p>
+                </div>
+
+                <div class="flex justify-center gap-4 mb-8">
+                    <button class="tab-button skill-tab-button active" data-tab="tech">Technical & Analytical</button>
+                    <button class="tab-button skill-tab-button" data-tab="prof">Professional Skills</button>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <!-- Technical Skills Content -->
+                    <div id="tech" class="tab-content skill-tab-content active">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 p-6 rounded-lg shadow">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Programming & Development</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                    <li>HTML5</li>
+                                    <li>CSS3</li>
+                                    <li>VBA (Excel Automation)</li>
+                                    <li>Solid understanding of programming logic and web development fundamentals.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-lg shadow">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Data & Productivity</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                    <li>Advanced MS Excel (Formulas, Pivot Tables)</li>
+                                    <li>MS PowerPoint (Presentations)</li>
+                                    <li>Skilled in leveraging generative AI tools for code assistance and data analysis.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-lg shadow md:col-span-2">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-3">Banking Domain Expertise</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-700 sm:grid sm:grid-cols-2 sm:gap-x-6">
+                                    <li>Credit Analysis</li>
+                                    <li>Risk Assessment</li>
+                                    <li>Anti-Money Laundering (AML)</li>
+                                    <li>Core Banking Operations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Professional Skills Content -->
+                    <div id="prof" class="tab-content skill-tab-content">
+                        <div class="bg-gray-50 p-6 rounded-lg shadow">
+                            <ul class="list-disc pl-5 space-y-2 text-gray-700 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                                <li>Team Leadership & Collaboration</li>
+                                <li>Problem-Solving & Adaptability</li>
+                                <li>Communication & Presentation Skills</li>
+                                <li>Selling & Negotiation Skills</li>
+                                <li>Fast and Accurate Task Execution</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Certifications Section -->
+        <section id="education" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Education & Certifications</h2>
+                    <p class="mt-4 text-lg text-gray-600">
+                        My formal education in commerce is complemented by continuous, self-motivated learning in web development and finance to stay ahead of the curve.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <!-- Education Card -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Education</h3>
+                        <p class="text-xl font-medium text-blue-600">Bachelor of Commerce (English)</p>
+                        <p class="text-gray-600 mb-2">South Valley University – July 2011</p>
+                        <p class="text-sm text-gray-500">GPA: 71.21%</p>
+                    </div>
+
+                    <!-- Certifications Card -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Key Certifications & Courses</h3>
+                        <ul class="space-y-3">
+                            <li class="font-medium text-gray-700 p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r-md">
+                                Web Development – Udacity Challenger Track
+                            </li>
+                            <li class="font-medium text-gray-700">Fundamentals of Banking – Arab Academy for Banking</li>
+                            <li class="font-medium text-gray-700">Anti-Money Laundering and CTF – Central Bank of Egypt</li>
+                            <li class="font-medium text-gray-700">Teamwork Skills – Dale Carnegie Training</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <footer id="contact" class="bg-gray-800 text-gray-300 py-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-white mb-4">Get In Touch</h2>
+                <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
+                    I am actively seeking new opportunities and am ready to relocate. Let's discuss how my unique blend of banking and technical skills can benefit your team.
+                </p>
+                <div class="flex justify-center items-center gap-x-6">
+                    <a href="mailto:youssifyaqob@yahoo.com" class="text-lg font-medium hover:text-blue-400">
+                        youssifyaqob@yahoo.com
+                    </a>
+                    <span class="text-gray-500">|</span>
+                    <a href="tel:+201285880121" class="text-lg font-medium hover:text-blue-400">
+                        +2 01285880121
+                    </a>
+                    <span class="text-gray-500">|</span>
+                    <a href="https://www.linkedin.com/in/youssef-yaqob-06909b159" target="_blank" rel="noopener noreferrer" class="text-lg font-medium hover:text-blue-400">
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Chart.js Donut Chart ---
+            const rolesCtx = document.getElementById('rolesChart').getContext('2d');
+            const rolesChart = new Chart(rolesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['ATM Supervisor', 'Credit Officer', 'Bank Teller', 'Customer Service'],
+                    datasets: [{
+                        label: 'Years in Role',
+                        data: [7.3, 2, 2, 1], // Approx 7.3 years as ATM Supervisor (June 2013 - Oct 2025 = 12.3 total, minus 5 for other roles)
+                        backgroundColor: [
+                            '#2563EB', // blue-600
+                            '#60A5FA', // blue-400
+                            '#93C5FD', // blue-300
+                            '#BFDBFE'  // blue-200
+                        ],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#374151' // text-gray-700
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + ' years';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- Tabbed Content Function ---
+            function setupTabs(buttonClass, contentClass) {
+                const tabButtons = document.querySelectorAll(buttonClass);
+                const tabContents = document.querySelectorAll(contentClass);
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabId = button.getAttribute('data-tab');
+
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+
+                        tabContents.forEach(content => {
+                            if (content.id === tabId) {
+                                content.classList.add('active');
+                            } else {
+                                content.classList.remove('active');
+                            }
+                        });
+                    });
+                });
+            }
+
+            setupTabs('.exp-tab-button', '.exp-tab-content');
+            setupTabs('.skill-tab-button', '.skill-tab-content');
+
+            // --- Smooth Scrolling for Nav Links ---
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // --- Active Nav Link on Scroll ---
+            const sections = document.querySelectorAll('section, footer');
+            const navLinksForScroll = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinksForScroll.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
+
